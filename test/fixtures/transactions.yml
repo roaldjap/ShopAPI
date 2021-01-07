@@ -1,0 +1,35 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  apn_code: 1
+  rrp: 9.99
+  last_buy_price: 9.99
+  item_desc: MyString
+  author: MyString
+  product_category: MyString
+  actual_stock: 1
+  trans_date: 2021-01-08
+  trans_time: 2021-01-08 00:07:23
+  trans_document: MyString
+  trans_ref: MyString
+  trans_qty: 1
+  trans_total_ex_tax: 9.99
+  trans_total_tax: 9.99
+  trans_discount: 9.99
+
+two:
+  apn_code: 1
+  rrp: 9.99
+  last_buy_price: 9.99
+  item_desc: MyString
+  author: MyString
+  product_category: MyString
+  actual_stock: 1
+  trans_date: 2021-01-08
+  trans_time: 2021-01-08 00:07:23
+  trans_document: MyString
+  trans_ref: MyString
+  trans_qty: 1
+  trans_total_ex_tax: 9.99
+  trans_total_tax: 9.99
+  trans_discount: 9.99
