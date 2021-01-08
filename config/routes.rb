@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/transactions/:apn_code', to: 'transactions#show'
-      get '/transactions/', to: 'transactions#get_all_apns'
+      get '/get_apns/', to: 'transactions#get_all_apns'
     end
   end
 

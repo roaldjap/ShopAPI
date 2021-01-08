@@ -2,7 +2,7 @@
 
 API routes
 
-`api/v1/transactions/` - get all apn codes
+`api/v1/get_apns/` - get all apn codes
 `api/v1/transactions/:apn_code` - get all information about one merchant
 
 <!-- 
