@@ -1,27 +1,9 @@
-# README
+# ShopAPI
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+API routes
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+`api/v1/transactions/` - get all apn codes
+`api/v1/transactions/:apn_code` - get all information about one merchant
 
 <!-- 
 
