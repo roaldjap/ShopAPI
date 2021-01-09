@@ -1,8 +1,10 @@
 <template>
   <v-app id="app">
       <Navigation />
+      <v-container>
       <h1>Sales Report</h1>
       <p>{{ message }}</p>
+      </v-container>
   </v-app>
 </template>
 
