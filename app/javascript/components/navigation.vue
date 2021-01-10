@@ -1,38 +1,25 @@
 <template>
-  <div class="navigation-bar">
-    <a class="navigation-item" :href=link.path>
-      {{link.text}}
-    </a>
-  </div>
+  <v-card tile class="overflow-hidden">
+    <v-app-bar color="deep-purple accent-4" dark>
+      <v-app-bar-nav-icon :href=link.path @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    </v-app-bar>
+  </v-card>
 </template>
 
 <script>
 export default {
-  data: function(){
-    return {
-      link: {
-        path: '/',
-        text: 'Home',
-        id: 1
-      }
-    }
-  }
-}
+  data: () => ({
+    link: {
+      path: "/",
+      text: "Home",
+      id: 1,
+    },
+  }),
+
+  watch: {
+    group() {
+      this.drawer = false;
+    },
+  },
+};
 </script>
-<style scoped>
-
-  .navigation-bar {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    background-color: #198dbb;
-    padding: 10px 0;
-  }
-
-  .navigation-item {
-    font-family:Arial, Helvetica, sans-serif;
-    color: white;
-    line-height: 1.6;
-  }
-
-</style>
