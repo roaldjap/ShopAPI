@@ -14,15 +14,20 @@ class Api::V1::TransactionsController < ApplicationController
 
   def show
     @transactions = Transaction.where(:apn_code => params[:apn_code])
-    all_years = @transactions.select(:trans_date).map{ |item| item.trans_date.year }.uniq
-    # net_by_year = @transactions.select("DATE_TRUNC('year', trans_date) AS year, SUM(trans_total_ex_tax) net_per_year").group('year')
-    # net_by_month = @transactions.select("DATE_TRUNC('month', trans_date) AS month, SUM(trans_total_ex_tax) AS net_per_month").group('month')
-    
-    all_years.each do |t|
-      # arrange date per year
+    #all_years = @transactions.select(:trans_date).map{ |item| item.trans_date.year }.uniq
+    net_by_year = @transactions.select("DATE_TRUNC('year', trans_date) AS year, SUM(trans_total_ex_tax) net_per_year, SUM(trans_total_tax) tax_per_year").group('year')
+    net_by_month = @transactions.select("DATE_TRUNC('month', trans_date) AS month, SUM(trans_total_ex_tax) AS net_per_month").group('month')
+    #net_by_month.map{|t| { :year => t.month}}
+    #net_by_year.map{|t| { :year => t.year.year}}
+
+    result = net_by_year.map do |i|
+      {
+        :label => i.year.year,
+        # :data => #should be array of 12
+      }
     end
 
-    render json: all_years
+    render json: result
 
   end
 
