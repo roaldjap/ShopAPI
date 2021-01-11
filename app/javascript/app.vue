@@ -3,13 +3,13 @@
     <Navigation />
     <v-container>
       <h1>Sales Report</h1>
-      <v-autocomplete
+      <!-- <v-autocomplete
         filled
         rounded
         v-model="apn_value"
         :items="apn_codes"
         label="APN Code"
-      />
+      /> -->
 
       <h2>Generated Report for: {{ apn_value }}</h2>
       <line-chart v-if="loaded" :chartdata="chartdata" :options="options" />
