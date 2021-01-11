@@ -7,13 +7,13 @@
         filled
         rounded
         v-model="apn_value"
-        :items="apn_codes"
+        :items="list_apn_codes"
         label="APN Code"
-        v-on:change="getApiChartData()"
+        v-on:click="getApiChartData()"
       />
 
       <h2>Generated Report for: {{ apn_value }}</h2>
-      <line-chart v-if="loaded" :chartdata="chartdata" :options="options" />
+      <line-chart v-if="loaded" :chartData="chartData" :options="options" />
     </v-container>
   </v-app>
 </template>
@@ -31,7 +31,7 @@ export default {
 
   data: () => ({
     message: "Hello Test!!",
-    apn_codes: null,
+    list_apn_codes: null,
     apn_value: null,
     loaded: false,
   }),
@@ -44,7 +44,7 @@ export default {
     axios
       .get(`/api/v1/get_apns`)
       .then((response) => {
-        this.apn_codes = response.data;
+        this.list_apn_codes = response.data;
       })
       .catch((error) => {
         console.log(error);
@@ -53,10 +53,10 @@ export default {
 
   methods: {
     async getApiChartData() {
-      console.log(this.apn_value);
       try {
-        const { apns } = await fetch("/api/v1/transactions/#{this.apn_value}");
-        this.chartdata = {
+        const response = await axios.get("/api/v1/transactions/" + this.apn_value);
+        const data = response.data
+        this.chartData = {
           labels: [
             "January",
             "February",
@@ -71,24 +71,7 @@ export default {
             "November",
             "December",
           ], // Months
-          datasets: [
-            // Sample data only
-            {
-              label: "2005", // Years
-              backgroundColor: this.getRandomColor(), // random
-              data: [4, 3, 4, 1, 7, 12, 1, 7, 1, 11, 1, 3], // profit
-            },
-            {
-              label: "2006", // Years
-              backgroundColor: this.getRandomColor(), // random
-              data: [0, 1, 4, 1, 5, 6, 9, 7, 5, 2, 1, 3], // profit
-            },
-            {
-              label: "2007", // Years
-              backgroundColor: this.getRandomColor(), // random
-              data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // profit
-            },
-          ],
+          datasets: data,
         };
         this.options = {
           scales: {
@@ -127,18 +110,8 @@ export default {
         this.loaded = true;
       } catch (e) {
         console.log(e);
-        console.log("No data available or Incorrect input");
-        LineChart.destroy(); // destroy
-      }
-    },
-
-    getRandomColor() {
-      var letters = "0123456789ABCDEF".split("");
-      var color = "#E6";
-      for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
+        console.log("No data available or Incorrect input")
+      };
     },
   },
 };

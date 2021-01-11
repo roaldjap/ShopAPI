@@ -7,23 +7,31 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def get_dates
-    # 2770000000062
     @trans_date = Transaction.select([:trans_date]).where(:apn_code => params[:apn_code]).pluck(:trans_date)
     render json: @trans_date
   end
 
   def show
     @transactions = Transaction.where(:apn_code => params[:apn_code])
-    #all_years = @transactions.select(:trans_date).map{ |item| item.trans_date.year }.uniq
+    
     net_by_year = @transactions.select("DATE_TRUNC('year', trans_date) AS year, SUM(trans_total_ex_tax) net_per_year, SUM(trans_total_tax) tax_per_year").group('year')
     net_by_month = @transactions.select("DATE_TRUNC('month', trans_date) AS month, SUM(trans_total_ex_tax) AS net_per_month").group('month')
-    #net_by_month.map{|t| { :year => t.month}}
-    #net_by_year.map{|t| { :year => t.year.year}}
-
+   
+    yom = net_by_month.map{ |t| {:year => t.month.year, :month => t.month.month, :sales => t.net_per_month}} 
     result = net_by_year.map do |i|
+      data = Array(1..12).map do |month|
+        net_hash = yom.find{ |sales_per_month| sales_per_month[:year] == i.year.year && sales_per_month[:month] == month}
+        if net_hash
+          net_hash[:sales]
+        else
+          0
+        end
+        
+      end
       {
         :label => i.year.year,
-        # :data => #should be array of 12
+        :data => data,
+        :backgroundColor => get_rand_color
       }
     end
 
@@ -31,26 +39,15 @@ class Api::V1::TransactionsController < ApplicationController
 
   end
 
-  #  Expected output by chartjs
-  # {
-  #   labels: ['January', 'February'], // Months
-  #   datasets: [
-  #     {
-  #       label: '2004', // Years
-  #       data: [40, 0, 20 ,0 ,0 ,0, 0] //should be always 12
-  #     },
-  #     {
-  #       label: '2005', // Year
-  #       data: [40, 0, 20 ,0 ,0 ,0, 0] //should be always 12
-  #     }
-  #   ]
-  # }
+  private
+  def get_rand_color
+    a = "#E6"
+    r = rand(255).to_s(16)
+    g = rand(255).to_s(16)
+    b = rand(255).to_s(16)
 
-  #  Mapping
-  # 
-  # render json: @transactions.map{|t| {
-  #   :year => t.trans_date.year,
-  #   :month => t.trans_date.month,
-  #   :profit => t.trans_total_ex_tax
-  # }}
+    r, g, b = [r, g, b].map { |s| if s.size == 1 then '0' + s else s end }
+
+    color = a + r + g + b
+  end
 end
