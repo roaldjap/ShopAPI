@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get "/get_apns/", to: "transactions#get_all_apns"
-      get "/transactions/:apn_code", to: "transactions#show"
-      get "/transactions/:apn_code/dates/", to: "transactions#get_dates"
+      get "/transactions/:apn_code", to: "transactions#line_graph"
+      get "/annual-transactions/:apn_code", to: "transactions#bar_graph"
     end
   end
 

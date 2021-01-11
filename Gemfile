@@ -63,3 +63,5 @@ gem "pg", "~> 1.2"
 gem "groupdate", "~> 5.2"
 
 gem "chartkick", "~> 3.4"
+
+gem "money", "~> 6.13"
