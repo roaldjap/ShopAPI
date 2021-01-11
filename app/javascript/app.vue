@@ -46,6 +46,7 @@ export default {
           "February",
           "March",
           "April",
+          "May",
           "June",
           "July",
           "August",
@@ -55,6 +56,7 @@ export default {
           "December",
         ], // Months
         datasets: [
+          // Sample data only
           {
             label: "2005", // Years
             backgroundColor: this.getRandomColor(), // random
@@ -63,17 +65,12 @@ export default {
           {
             label: "2006", // Years
             backgroundColor: this.getRandomColor(), // random
-            data: [4, 3, 4, 1, 7, 12, 1, 7, 1, 11, 1, 3], // profit
+            data: [0, 1, 4, 1, 5, 6, 9, 7, 5, 2, 1, 3], // profit
           },
           {
             label: "2007", // Years
             backgroundColor: this.getRandomColor(), // random
-            data: [40, 20, 29], // profit
-          },
-          {
-            label: "Data One", // Years
-            backgroundColor: this.getRandomColor(), // random
-            data: [40, 20], // profit
+            data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // profit
           },
         ],
       };
@@ -81,6 +78,10 @@ export default {
         scales: {
           yAxes: [
             {
+              scaleLabel: {
+                display: true,
+                labelString: "Net Sales (ex total tax)",
+              },
               ticks: {
                 beginAtZero: true,
               },
@@ -91,8 +92,12 @@ export default {
           ],
           xAxes: [
             {
+              scaleLabel: {
+                display: true,
+                labelString: "Months",
+              },
               gridLines: {
-                display: false,
+                display: true,
               },
             },
           ],
@@ -123,7 +128,7 @@ export default {
   methods: {
     getRandomColor() {
       var letters = "0123456789ABCDEF".split("");
-      var color = "#";
+      var color = "#E6";
       for (var i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
       }

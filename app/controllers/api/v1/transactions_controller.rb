@@ -14,18 +14,19 @@ class Api::V1::TransactionsController < ApplicationController
 
   def show
     @transactions = Transaction.where(:apn_code => params[:apn_code])
-    # all_years = @transactions.select(:trans_date).map{ |item| item.trans_date.year }.uniq
-
-    net_by_month = @transactions.select("DATE_TRUNC('month', trans_date) AS month, SUM(trans_total_ex_tax) AS ex_total_tax_per_month").group('month')
+    all_years = @transactions.select(:trans_date).map{ |item| item.trans_date.year }.uniq
+    # net_by_year = @transactions.select("DATE_TRUNC('year', trans_date) AS year, SUM(trans_total_ex_tax) net_per_year").group('year')
+    # net_by_month = @transactions.select("DATE_TRUNC('month', trans_date) AS month, SUM(trans_total_ex_tax) AS net_per_month").group('month')
     
-    # net_by_month = net_by_month.map{ |t|
-    #   :year => t.trans_month,
+    all_years.each do |t|
+      # arrange date per year
+    end
 
-    render json: net_by_month
+    render json: all_years
 
   end
 
-
+  #  Expected output by chartjs
   # {
   #   labels: ['January', 'February'], // Months
   #   datasets: [
@@ -40,6 +41,8 @@ class Api::V1::TransactionsController < ApplicationController
   #   ]
   # }
 
+  #  Mapping
+  # 
   # render json: @transactions.map{|t| {
   #   :year => t.trans_date.year,
   #   :month => t.trans_date.month,
