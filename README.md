@@ -1,11 +1,24 @@
 # ShopAPI
 
-API routes
+A simple application made with Rails 6.1.0 + PostgresSQL + Webpack => VueJS
 
-- `api/v1/get_apns/` - get all apn codes
-- `api/v1/transactions/:apn_code` - get all information about one merchant
-- `api/v1/transactions/:apn_code/dates/` - get all available dates
-
+Installation
+-------------
+1. Clone this repository
+2. Install the dependencies by running these commands:
+```bash
+$ bundle install # to install ruby dependencies
+$ yarn install # (npm i) to install js dependencies 
+```
+3. Duplicate your `.env.sample` file and rename it to `.env`
+4. Fill up the desired database_uri or database credentials
+5. Run `$ bundle exec rake db:create` to create database
+6. Run `$ bundle exec rake db:seed` to seed the csv file provided
+7. Start the application by following these commands:
+```bash
+$ rails s # Backend w/ initial compilation of front end
+$ bin/webpack && bin/webpack-dev-server # Front End (enable recompilation while editing vue)
+```
 <!-- 
 
 Here is a sales history file for a shop. 
