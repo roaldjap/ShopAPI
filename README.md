@@ -19,8 +19,16 @@ $ yarn install # (npm i) to install js dependencies
 $ rails s # Backend w/ initial compilation of front end
 $ bin/webpack && bin/webpack-dev-server # Front End (enable recompilation while editing vue)
 ```
-<!-- 
 
+API Endpoints
+-------------
+These are the available API Endpoints for the application to retrieve some information from DB
+- `api/v1/get_apns/` - returns all apn_code available
+- `/transactions/:apn_code` - returns Array of datasets needed for chartjs
+- `/annual-transactions/:apn_code` - returns an Object needed for chartjs
+
+
+<!--  Breakdown of requirements from warwick's email
 Here is a sales history file for a shop. 
 1. I want you to create and load this into an SQL database, 
 2. create an API and an interface that will give the shop owner a monthly view of ex tax sales and gross profit this year vs last year. 
