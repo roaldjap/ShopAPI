@@ -35,25 +35,18 @@ class Api::V1::TransactionsController < ApplicationController
     @transactions = Transaction.where(:apn_code => params[:apn_code])
     
     net_by_year = @transactions.select("DATE_TRUNC('year', trans_date) AS year, SUM(trans_total_ex_tax) net_per_year, SUM(trans_total_tax) tax_per_year").group('year')
+    
    
-   
-    # result = net_by_year.map do |i|
-      
-    #   {
-    #     :labels => i.year.year,
-    #     :data => data,
-    #     :backgroundColor => get_rand_color
-    #   }
-    # end
+    years = net_by_year.map {|y| y.year.year }
+    annual_gross = net_by_year.map {|g| g.net_per_year + g.tax_per_year }
+    result = {}
+    result[:labels] = years
+    result[:datasets] = [
+      :data => annual_gross,
+      :backgroundColor => get_rand_color
+    ]
 
-    # this.chartData = {
-    #   labels: [
-    #     // years
-    #   ], 
-    #   datasets: data,
-    # };
-
-    render json: net_by_year
+    render json: result
   end
 
   private

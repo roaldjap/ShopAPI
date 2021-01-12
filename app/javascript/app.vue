@@ -14,20 +14,20 @@
         @change="getApiChartData()"
       ></v-autocomplete>
 
-      <h2>Generated Report for: {{ apn_value }}</h2>
+      <h2 v-if="loaded">Trend Report for: {{ apn_value }}</h2>
       <line-chart
         v-if="loaded"
         :chart-data="chartData"
         :options="options"
         :apn_value="apn_value"
       />
-<!-- 
+      <h2 v-if="loaded">Annual Report for: {{ apn_value }}</h2>
       <bar-chart
         v-if="loaded"
-        :chart-data="chartData"
+        :chart-data="barData"
         :options="options"
         :apn_value="apn_value"
-      /> -->
+      />
     </v-container>
   </v-app>
 </template>
@@ -42,14 +42,15 @@ export default {
   components: {
     Navigation,
     LineChart,
-    BarChart
+    BarChart,
   },
 
   data: () => ({
     list_apn_codes: null,
     apn_value: null,
-    loaded: false,
+    loaded: true,
     chartData: null,
+    barData: null,
   }),
 
   mounted() {
@@ -69,55 +70,31 @@ export default {
   },
 
   methods: {
-    getApiChartData() {
-      this.lineChartData();
-    },
-
     async barChartData() {
       if (this.apn_value === null) {
-        console.log("trigger");
-        this.chartData = {
+        console.log("trigger bar");
+        this.barData = {
           type: Object,
           default: null,
         };
+        this.loaded = false
         return false;
       }
 
       try {
         const response = await axios.get(
-          "/api/v1/transactions/" + this.apn_value
+          "/api/v1/annual-transactions/" + this.apn_value
         );
+
         const data = response.data;
-        this.chartData = {
-          labels: [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ], // Months
-          datasets: data,
-        };
+        this.barData = data;
         this.options = {
           scales: {
             yAxes: [
               {
                 scaleLabel: {
                   display: true,
-                  labelString: "Net Sales (ex total tax)",
-                },
-                ticks: {
-                  beginAtZero: true,
-                },
-                gridLines: {
-                  display: true,
+                  labelString: "Gross Sales (Annual Net + Tax)",
                 },
               },
             ],
@@ -125,7 +102,7 @@ export default {
               {
                 scaleLabel: {
                   display: true,
-                  labelString: "Months",
+                  labelString: "Years",
                 },
                 gridLines: {
                   display: true,
@@ -134,7 +111,7 @@ export default {
             ],
           },
           legend: {
-            display: true,
+            display: false,
           },
           responsive: true,
           maintainAspectRatio: false,
@@ -153,6 +130,7 @@ export default {
           type: Object,
           default: null,
         };
+        this.loaded = false
         return false;
       }
 
@@ -175,7 +153,7 @@ export default {
             "October",
             "November",
             "December",
-          ], // Months
+          ],
           datasets: data,
         };
         this.options = {
@@ -217,7 +195,12 @@ export default {
         console.log(e);
         console.log("No data available or Incorrect input");
       }
-    }
+    },
+
+    getApiChartData() {
+      this.lineChartData();
+      this.barChartData();
+    },
   },
 };
 </script>
